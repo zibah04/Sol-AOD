@@ -40,7 +40,7 @@ private val Muted = Color(0xFF88847D)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { SolApp() }
+        setContent { SolApp(onActivate = { startActivity(Intent(Settings.ACTION_DREAM_SETTINGS)) }) }
     }
 }
 
@@ -60,7 +60,7 @@ private val themes = listOf(
 )
 
 @Composable
-fun SolApp() {
+fun SolApp(onActivate: () -> Unit) {
     var selected by remember { mutableStateOf(themes.first()) }
     var page by remember { mutableStateOf("home") }
     MaterialTheme(colorScheme = darkColorScheme(
@@ -84,7 +84,7 @@ fun SolApp() {
                     "gallery" -> GalleryScreen(selected) { selected = it; page = "preview" }
                     "preview" -> PreviewScreen(selected) { page = "gallery" }
                     "settings" -> SettingsScreen()
-                    else -> HomeScreen(selected, onGallery = { page = "gallery" }, onPreview = { page = "preview" }, onApply = { startActivity(Intent(Settings.ACTION_DREAM_SETTINGS)) })
+                    else -> HomeScreen(selected, onGallery = { page = "gallery" }, onPreview = { page = "preview" }, onApply = onActivate)
                 }
                 Spacer(Modifier.weight(1f))
                 NavigationBar(containerColor = Color(0xFF090909), contentColor = Paper) {
