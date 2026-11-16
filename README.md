@@ -10,7 +10,7 @@ This is the first Android Studio project foundation for Sol AOD.
 - Future theme-package and visual-editor roadmap
 
 ## Important status
-This is an **in-app prototype**, not yet a true screen-off AOD. Android 11 / MIUI 12.5.5 restricts third-party control of the system's native always-on display. Screen-off operation must be designed and tested separately on the Redmi Note 10. This starter does not request root access or special permissions.
+This remains a prototype, but now includes an Android DreamService screensaver engine. This is a supported no-root way to display the Sol clock on the device while the system starts its screensaver (typically while charging or docked). It is **not a replacement for Xiaomi's native lock-screen AOD** and does not promise to appear every time the phone is locked. MIUI may hide or restrict the Android screensaver settings.
 
 The battery readout is currently a visual placeholder (`—%`); live battery integration is a next implementation step. The three additional gallery entries are design placeholders, not completed themes. Import/export and the visual editor are planned, not implemented.
 
@@ -37,6 +37,6 @@ The importer should validate package size, manifest schema, file types and asset
 GitHub Actions builds the debug APK on pushes to `main`. Open the **Actions** tab, select the latest successful **Build Sol AOD APK** run, and download the `Sol-AOD-debug-apk` artifact. Artifacts are retained for 14 days.
 
 ## Current scope
-Version 0.1.0 is a foundation/prototype. Live battery display, real screen-off behaviour, theme importing/exporting, additional finished themes and the visual theme creator are not implemented yet.
+Version 0.2.0 development adds a first Android screensaver display engine and an activation shortcut. The engine is a charging/docked screensaver fallback, not a true lock-screen AOD. MIUI device testing is still required. Theme importing/exporting, additional finished themes and the visual theme creator are not implemented yet.
 
 Target test device: Xiaomi Redmi Note 10, MIUI Global 12.5.5.0 (RKGMIXM), Android 11.

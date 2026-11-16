@@ -1,5 +1,8 @@
 package com.sol.aod
 
+import android.content.Intent
+import android.provider.Settings
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,7 +40,7 @@ private val Muted = Color(0xFF88847D)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { SolApp() }
+        setContent { SolApp(onActivate = { startActivity(Intent(Settings.ACTION_DREAM_SETTINGS)) }) }
     }
 }
 
@@ -57,7 +60,7 @@ private val themes = listOf(
 )
 
 @Composable
-fun SolApp() {
+fun SolApp(onActivate: () -> Unit) {
     var selected by remember { mutableStateOf(themes.first()) }
     var page by remember { mutableStateOf("home") }
     MaterialTheme(colorScheme = darkColorScheme(
@@ -81,7 +84,7 @@ fun SolApp() {
                     "gallery" -> GalleryScreen(selected) { selected = it; page = "preview" }
                     "preview" -> PreviewScreen(selected) { page = "gallery" }
                     "settings" -> SettingsScreen()
-                    else -> HomeScreen(selected, onGallery = { page = "gallery" }, onPreview = { page = "preview" })
+                    else -> HomeScreen(selected, onGallery = { page = "gallery" }, onPreview = { page = "preview" }, onApply = onActivate)
                 }
                 Spacer(Modifier.weight(1f))
                 NavigationBar(containerColor = Color(0xFF090909), contentColor = Paper) {
@@ -105,7 +108,7 @@ fun SolApp() {
 }
 
 @Composable
-fun HomeScreen(theme: SolTheme, onGallery: () -> Unit, onPreview: () -> Unit) {
+fun HomeScreen(theme: SolTheme, onGallery: () -> Unit, onPreview: () -> Unit, onApply: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp)) {
         Text("CURRENT DISPLAY", color = Muted, fontSize = 10.sp, letterSpacing = 2.sp)
         Spacer(Modifier.height(12.dp))
@@ -121,8 +124,12 @@ fun HomeScreen(theme: SolTheme, onGallery: () -> Unit, onPreview: () -> Unit) {
         Button(onClick = onGallery, modifier = Modifier.fillMaxWidth().height(52.dp), colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Ink), shape = RoundedCornerShape(14.dp)) {
             Text("EXPLORE THEME LIBRARY", fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
         }
+        Spacer(Modifier.height(10.dp))
+        OutlinedButton(onClick = onApply, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.outlinedButtonColors(contentColor = Gold)) {
+            Text("ACTIVATE CHARGING AOD", fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+        }
         Spacer(Modifier.height(12.dp))
-        Text("Built-in themes • Import support planned • Theme creator planned", color = Muted, fontSize = 10.sp)
+        Text("Android screensaver mode • Starts while charging or docked", color = Muted, fontSize = 10.sp)
     }
 }
 
